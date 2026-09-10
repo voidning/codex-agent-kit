@@ -1,6 +1,6 @@
 # Codex Agent Kit
 
-[English](README.md) | 简体中文
+[中文首页](README.md) | [English](README.en.md)
 
 可迁移的 Codex 多智能体配置：按需分工、兼顾成本，并根据任务难度逐级提升推理强度。
 

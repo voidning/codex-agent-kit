@@ -1,60 +1,60 @@
 # Codex Agent Kit
 
-English | [简体中文](README.zh-CN.md)
+简体中文 | [English](README.en.md)
 
-Portable Codex multi-agent configuration with on-demand delegation, cost-conscious defaults, and difficulty-based escalation.
+可迁移的 Codex 多智能体配置：按需分工、兼顾成本，并根据任务难度逐级提升推理强度。
 
-A personal configuration starter kit: the primary agent coordinates useful independent work, collects evidence, and verifies the final result. Simple or tightly sequential tasks stay with the primary agent. Roles are started only when needed.
+这是一套个人配置模板。主代理负责协调可以独立推进的工作、汇总证据并验证最终结果。简单任务或步骤紧密依赖的任务由主代理直接完成，各角色只在有需要时启动。
 
-## Default roles
+## 默认角色
 
-| Role | Model | Reasoning | Responsibility |
+| 角色 | 模型 | 推理强度 | 职责 |
 | --- | --- | --- | --- |
-| Primary | `gpt-6-astra` | `medium` | Plan, coordinate, integrate, and verify |
-| Explorer | `gpt-5.6-luna` | `medium` | Bounded, read-heavy investigation |
-| Worker | `gpt-5.6-sol` | `high` | Implementation and appropriate tests |
-| Researcher | `gpt-5.6-luna` | `medium` | Focused documentation and factual lookup |
-| Reviewer | `gpt-6-astra` | `high` | Optional independent review of material risks |
+| 主负责人 | `gpt-6-astra` | `medium` | 规划、协调、整合与最终验证 |
+| 探索员 | `gpt-5.6-luna` | `medium` | 范围明确、以读取为主的调查 |
+| 执行者 | `gpt-5.6-sol` | `high` | 具体实现与适当测试 |
+| 研究员 | `gpt-5.6-luna` | `medium` | 聚焦文档和事实查证 |
+| 审核员 | `gpt-6-astra` | `high` | 必要时独立审核重大风险 |
 
-At most **three child agents** run concurrently. Children do not delegate further unless explicitly requested.
+最多同时运行 **3 个子代理**。除非明确要求，子代理不再向下委派任务。
 
-## Quick start
+## 快速开始
 
-1. Install Codex and sign in on the destination computer.
-2. Clone or download this repository.
-3. Give Codex access to the repository directory.
-4. Send the contents of [SETUP_PROMPT.md](SETUP_PROMPT.md), or use the [Chinese setup prompt](SETUP_PROMPT.zh-CN.txt).
-5. Let Codex verify the installed version and available models, back up existing files, merge settings, and report whether a restart or new task is needed.
+1. 在新电脑安装并登录 Codex。
+2. 克隆或下载本仓库。
+3. 让 Codex 读取仓库目录。
+4. 复制并发送[中文配置提示词](SETUP_PROMPT.zh-CN.txt)的全部内容，也可使用[英文配置提示词](SETUP_PROMPT.md)。
+5. 让 Codex 检查版本和模型可用性，备份已有文件，合并配置，并说明是否需要重启客户端或新建任务。
 
-The setup prompt authorizes installation; downloading or opening this repository alone does not install anything.
+发送配置提示词即授权执行其中的安装步骤；仅下载或打开仓库不会自动安装。
 
-## Files and destinations
+## 文件与安装位置
 
-| File | Purpose / destination |
+| 文件 | 用途／目标位置 |
 | --- | --- |
-| `config-to-merge.toml` | Merge into `$CODEX_HOME/config.toml` |
-| `AGENTS.md` | Merge workflow rules into `$CODEX_HOME/AGENTS.md` |
-| `agents/*.toml` | Install four custom roles under `$CODEX_HOME/agents/` |
-| `SETUP_PROMPT.md` | English installation prompt |
-| `SETUP_PROMPT.zh-CN.txt` | Chinese installation prompt |
-| `GUIDE.zh-CN.txt` | Chinese migration guide |
+| `config-to-merge.toml` | 合并到 `$CODEX_HOME/config.toml` |
+| `AGENTS.md` | 将分工规则合并到 `$CODEX_HOME/AGENTS.md` |
+| `agents/*.toml` | 将四个自定义角色安装到 `$CODEX_HOME/agents/` |
+| `SETUP_PROMPT.md` | 英文安装提示词 |
+| `SETUP_PROMPT.zh-CN.txt` | 中文安装提示词 |
+| `GUIDE.zh-CN.txt` | 中文迁移说明 |
 
-When `CODEX_HOME` is not set, the usual directory is `~/.codex`. The configuration file is a **merge fragment**, not a complete replacement: preserve existing authentication, providers, plugins, MCP servers, projects, and permissions. Keep `model` and `model_reasoning_effort` at the TOML top level and merge into an existing `[agents]` table instead of duplicating it.
+未设置 `CODEX_HOME` 时，通常使用 `~/.codex` 目录。`config-to-merge.toml` 是**需要合并的配置片段**，请保留已有的认证、服务商、插件、MCP、项目和权限设置。`model` 和 `model_reasoning_effort` 应放在 TOML 顶层；如果已有 `[agents]` 表，应合并字段，避免重复创建。
 
-## Escalation and context
+## 按难度升级与控制上下文
 
-Start exploration and research at medium reasoning. After one focused attempt, report insufficient evidence, conflicting sources, or difficult cross-module reasoning to the primary agent. The primary can clarify the scope, take over, or escalate to Luna / high, then Sol / high when appropriate. Reserve Astra / xhigh independent review for difficult security, concurrency, data-consistency, or similarly material correctness issues.
+探索和研究从 medium 开始。一次针对性尝试后，如果证据不足、来源冲突，或涉及困难的跨模块推理，子代理应向主代理报告。主代理决定缩小或澄清范围、亲自接手，或按需升级至 Luna / high，再考虑 Sol / high。Astra / xhigh 独立审核仅用于困难的安全、并发、数据一致性或同等重要的正确性问题。
 
-Custom role files pin model and reasoning settings. Escalation must use an unpinned general-purpose/default agent with explicit model and effort settings, if supported; a prompt alone does not override a pinned role file.
+自定义角色文件会固定模型和推理强度。需要升级时，如果客户端支持，应使用未固定这些设置的通用/default 代理，并显式指定模型和推理强度；仅在提示词中要求升级无法覆盖固定的角色配置。
 
-Provide each child only the objective, relevant context, constraints, file ownership, and acceptance criteria. Collect concise conclusions, supporting references, validation results, and unresolved issues.
+只向子代理提供完成任务需要的目标、上下文、约束、文件分工和验收标准。返回结果应包含简洁结论、证据与引用、验证结果和未解决问题，避免复制整个对话或堆积原始日志。
 
-## Compatibility and cost
+## 兼容性与成本
 
-This kit reflects a personal configuration exported on September 10, 2026. Model access, reasoning levels, and configuration support depend on the destination account and Codex version. Verify them during installation and report unavailable settings explicitly.
+本模板基于 2026 年 9 月 10 日导出的个人配置。模型权限、推理档位和配置格式支持取决于新电脑的账号及 Codex 版本，安装时需要核实，并明确报告不支持的设置。
 
-Multiple agents can consume more tokens than a comparable single-agent run. These defaults aim to avoid unnecessary delegation; they do not guarantee lower total cost.
+多代理可能比同类单代理任务消耗更多 token。这套默认规则旨在减少不必要的委派，不保证总成本更低。
 
-No account credentials, API keys, provider endpoints, or machine-specific project paths are included. This is an independent configuration kit, not an official OpenAI preset.
+仓库不含账号凭据、API 密钥、服务商地址或机器专属项目路径。这是独立的个人配置模板，并非 OpenAI 官方预设。
 
-Reference: [Official Codex subagent documentation](https://developers.openai.com/codex/multi-agent).
+参考：[Codex 子代理官方文档](https://developers.openai.com/codex/multi-agent)。
