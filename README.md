@@ -1,5 +1,7 @@
 # Codex Agent Kit
 
+English | [简体中文](README.zh-CN.md)
+
 Portable Codex multi-agent configuration with on-demand delegation, cost-conscious defaults, and difficulty-based escalation.
 
 A personal configuration starter kit: the primary agent coordinates useful independent work, collects evidence, and verifies the final result. Simple or tightly sequential tasks stay with the primary agent. Roles are started only when needed.
