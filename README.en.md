@@ -2,9 +2,25 @@
 
 [简体中文](README.md) | English
 
-Portable Codex multi-agent configuration with on-demand delegation, cost-conscious defaults, and difficulty-based escalation.
+Portable Codex collaboration and multi-agent configuration with natural requests, goal-matched validation, on-demand delegation, and difficulty-based escalation.
 
 A personal configuration starter kit: the primary agent coordinates useful independent work, collects evidence, and verifies the final result. Simple or tightly sequential tasks stay with the primary agent. Roles are started only when needed.
+
+## Collaboration principles and boundaries
+
+Accept natural, brief, incomplete requests. Use the conversation, project documents, and existing results to establish the goal and preserve confirmed decisions. Complete simple tasks directly without requiring a template. Decide routine reversible details within authorization; ask only essential questions when the direction cannot be inferred and a wrong choice would cause substantial rework. Follow applicable permission rules without requesting existing authorization again.
+
+When a visual or experience direction remains unclear and a full implementation would be expensive to redo, start with a representative sample. If autonomous selection is already authorized, compare and continue without an extra approval stage. Inspect actual renders for visual work, normal operation paths for interactions, and expected behavior for functions. Reassess failed fixes using evidence. Static checks do not replace experience validation, and self-checks do not establish user satisfaction.
+
+These principles apply to both single-agent and multi-agent work. They do not mandate interviews, samples, or reviews for every task. Deliver when the current goal and necessary validation are complete, without automatically expanding optimization, adding review rounds, or creating new rules. The complete conditions are in [AGENTS.md](AGENTS.md), maintained in Chinese as the canonical workflow.
+
+## Upgrading an existing installation
+
+This revision integrates collaboration principles with the existing roles, model levels, concurrency limit, escalation conditions, and handoff rules. Role configurations and model defaults are unchanged. Shared requirements such as on-demand delegation are organized as general principles with specific execution conditions.
+
+Merge the complete repository `AGENTS.md` into the personal global file. Replace equivalent rules from earlier kit versions instead of appending the old English workflow or the six collaboration paragraphs again. Preserve unrelated compatible personal rules and report unresolved semantic conflicts. Do not overwrite the entire personal configuration file.
+
+A rule merge and static checks do not prove better real-world outcomes. Evaluate correction rounds, completion time, acceptance results, and available usage data on real tasks before tuning further; do not claim a measured speed or cost improvement without evidence.
 
 ## Default roles
 
@@ -33,7 +49,7 @@ The setup prompt authorizes installation; downloading or opening this repository
 | File | Purpose / destination |
 | --- | --- |
 | `config-to-merge.toml` | Merge into `$CODEX_HOME/config.toml` |
-| `AGENTS.md` | Merge workflow rules into `$CODEX_HOME/AGENTS.md` |
+| `AGENTS.md` | Merge the complete collaboration and delegation rules into `$CODEX_HOME/AGENTS.md` |
 | `agents/*.toml` | Install four custom roles under `$CODEX_HOME/agents/` |
 | `SETUP_PROMPT.md` | English installation prompt |
 | `SETUP_PROMPT.zh-CN.txt` | Chinese installation prompt |
@@ -51,7 +67,7 @@ Provide each child only the objective, relevant context, constraints, file owner
 
 ## Compatibility and cost
 
-This kit reflects a personal configuration exported on September 10, 2026. Model access, reasoning levels, and configuration support depend on the destination account and Codex version. Verify them during installation and report unavailable settings explicitly.
+Model settings reflect a personal configuration exported on September 10, 2026; collaboration principles were integrated on September 11, 2026. Model access, reasoning levels, and configuration support depend on the destination account and Codex version. Verify them during installation and report unavailable settings explicitly.
 
 Multiple agents can consume more tokens than a comparable single-agent run. These defaults aim to avoid unnecessary delegation; they do not guarantee lower total cost.
 

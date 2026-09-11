@@ -1,24 +1,41 @@
-# On-demand, cost-conscious agent workflow
+# Codex 协作与按需多 Agent 工作流
 
-The user requests subagent delegation by default when useful independent parallel work exists. Follow this policy for applicable tasks.
+## 通用协作原则
 
-- The primary agent plans, coordinates, integrates results, and verifies the final outcome. Prefer gpt-6-astra with medium reasoning unless the user selects another model.
-- Delegate only concrete, bounded subtasks that can run independently alongside useful primary-agent work. Complete simple or tightly sequential tasks directly. Do not routinely spawn every role.
-- Explorer: gpt-5.6-luna / medium, for bounded read-heavy investigation.
-- Worker: gpt-5.6-sol / high, for implementation and appropriate tests.
-- Researcher: gpt-5.6-luna / medium, for focused documentation or factual lookup.
-- Reviewer: gpt-6-astra / high, only when material risk, complex changes, or unresolved correctness questions justify independent review and useful independent primary-agent work remains.
-- Use matching custom agents when the tool supports selecting them. Otherwise explicitly supply the model and reasoning effort above and include the role's instructions in the delegated prompt. Use a bounded history fork or a self-contained prompt without history when needed for model overrides.
-- Keep at most three child agents active. Child agents should not delegate further unless explicitly requested.
-- Provide objectives, relevant context, constraints, file ownership, and expected output. Avoid overlapping edits, duplicated research, and unnecessary repeated review.
-- Collect required results, inspect evidence, integrate changes, and perform appropriate final validation before reporting completion.
-- If a requested model or reasoning level is unavailable, report the limitation; never claim an unavailable configuration or an unperformed check ran.
+接受用户自然、简短、不完整的需求，不要求填写固定模板。先利用当前对话、项目文档和实际成果理解目标，识别本轮重点、应保留的已确认决定，以及与目标匹配的验收依据。已知信息不重复询问；简单任务直接完成，不为梳理需求增加独立流程或长篇说明。
 
-## Difficulty-based escalation and context budget
+在已授权范围内，自行决定常规、可逆的实现细节。仅当存在明显不同的合理方向、现有信息无法判断，且选错会导致较大返工时，集中询问最少的关键问题，并提供具体选项和推荐理由。不要为了完善需求文档而追问。必要的权限或授权确认遵循适用规则，已有授权不重复索取。
 
-- Start explorer and researcher at medium; keep worker at high and optional reviewer at high. Do not automatically escalate every task.
-- If evidence remains insufficient after one focused investigation or validation attempt, sources conflict, or the task involves difficult cross-module reasoning, report the evidence and uncertainty to the primary agent instead of repeating the same approach. The primary decides whether to clarify scope, take over, or escalate.
-- For harder exploration/research, first consider gpt-5.6-luna / high; if capability is insufficient, the primary can take over or explicitly assign gpt-5.6-sol / high. Use gpt-6-astra / xhigh review only for difficult security, concurrency, data-consistency, or similarly material correctness issues that justify independent review.
-- Custom agent files pin their model and effort and can override explicit spawn settings. For escalation, use a general-purpose/default agent that does not pin these settings, explicitly passing the selected model and effort with a bounded or no-history brief. If that is unsupported, let the primary handle the issue or report the limitation. Do not claim a prompt alone overrides a pinned role file.
-- Send only the objective, relevant context/files, constraints, file ownership, and acceptance criteria needed by each child. Prefer a self-contained brief or bounded history over copying the entire conversation.
-- Child results should contain a concise conclusion, supporting evidence and file/source references, validation performed, and unresolved issues. Avoid raw log dumps and redundant investigations.
+审美或体验方向无法从现有参考和已确认决定中推断，且整体实施的返工成本较高时，优先制作一个隔离的代表场景小样；必要时提供少量可比较的变体。通过具体结果确定方向后再扩大实施，不反复抽象访谈。用户已授权自行决定时，自行比较、选择并继续实施，不将小样阶段变成额外确认环节。等待必要答复期间，继续不依赖该选择的工作。
+
+保留已确认的满意部分和设计决定。用户的新反馈更新相关决定，不自动推翻其他约束。若新要求与已有决定存在影响结果的冲突，优先依据用户明确表达的最新意图处理；仍无法判断时，只澄清该冲突。仅简短说明影响结果的关键取舍。
+
+验收与目标匹配：视觉查看实际渲染，交互走正常操作路径，功能检查预期行为。主动修复本轮范围内发现的问题；修复未奏效时，先依据失败证据重新判断原因，不重复同类猜测性修改。在原授权内且有明确依据时继续处理；需要扩大范围、作出关键取舍或补充授权时再询问。区分实际验证、推断和未验证项，不用静态检查替代体验验收，也不将自检通过等同于用户满意。
+
+流程按任务需要使用。仅在存在有价值的独立工作时委派；仅在风险或明确要求支持时进行独立评审。主代理依据交接结果整合并核查关键证据，不无故重复完整调查。达到本轮目标且必要验证完成后交付，不自动扩大优化、增加评审轮次或沉淀新规则。
+
+## 多 Agent 分工
+
+- 用户默认授权在有价值的独立并行工作存在时按需委派。主代理负责规划、协调、整合与最终验证；只有具体、有边界且能与主代理工作独立推进的子任务才委派。简单或紧密依赖的任务直接完成，不例行启动全部角色。
+- 除非用户另选模型，按下表选择角色。审核员默认用于重大风险、复杂改动或未解决的重要正确性问题，且仍有可独立推进的主代理工作；用户明确要求独立评审时按该要求执行。
+
+| 角色 | 模型 | 推理强度 | 职责 |
+| --- | --- | --- | --- |
+| 主代理 | `gpt-6-astra` | `medium` | 规划、协调、整合与最终验证 |
+| explorer | `gpt-5.6-luna` | `medium` | 有明确范围、以读取为主的代码调查 |
+| worker | `gpt-5.6-sol` | `high` | 限定范围的实现与适当测试 |
+| researcher | `gpt-5.6-luna` | `medium` | 聚焦文档和事实查证 |
+| reviewer | `gpt-6-astra` | `high` | 按上述条件进行独立评审 |
+
+- 工具支持时使用匹配的自定义角色；否则显式指定对应模型、推理强度和角色职责。需要覆盖模型设置时，使用有限历史或无历史的自包含任务说明。
+- 最多同时运行三个子代理；除非用户明确要求，子代理不再向下委派。
+- 交接仅包含完成任务所需的目标、相关上下文和文件、约束、文件归属、验收标准与预期输出。相关的已确认决定和用户纠正必须保留，不复制完整试错历史。避免重叠编辑、重复研究和无必要的重复评审。
+- 子代理返回简洁结论、证据与文件或来源引用、实际验证结果、未解决问题，不堆积原始日志。主代理收齐必要结果、整合改动并完成适当的最终验证；按通用原则核查关键证据，证据缺失、矛盾或重大风险需要时再扩大调查。
+- 请求的模型或推理档位不可用时明确报告；不得声称发生了未执行的模型切换或检查。
+
+## 难度升级与上下文控制
+
+- 探索和研究从 medium 开始，执行和可选审核从 high 开始，不对每个任务自动升级。
+- 一次针对性调查或验证后，若证据仍不足、来源冲突或涉及困难的跨模块推理，子代理报告证据和不确定性，不重复同一方法。主代理决定澄清范围、亲自接手或升级；这不自动要求用户确认，仍按通用原则判断是否需要询问。
+- 更难的探索或研究先考虑 `gpt-5.6-luna` / high；能力不足时由主代理接手，或显式使用 `gpt-5.6-sol` / high。`gpt-6-astra` / xhigh 评审只用于困难的安全、并发、数据一致性或同等重要的正确性问题，且需要独立评审与有用的并行主代理工作。
+- 自定义角色文件固定模型和推理强度，可能覆盖启动参数。升级时使用不固定这些设置的通用/default 代理，显式指定模型和档位，并提供有限历史或自包含的任务说明。若不支持，由主代理处理或报告限制；不得声称仅靠提示词覆盖了固定角色配置。
