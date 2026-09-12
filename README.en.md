@@ -6,17 +6,29 @@ Portable Codex collaboration and multi-agent configuration with natural requests
 
 A personal configuration starter kit: the primary agent coordinates useful independent work, collects evidence, and verifies the final result. Simple or tightly sequential tasks stay with the primary agent. Roles are started only when needed.
 
-## Collaboration principles and boundaries
+## Problems this workflow addresses
 
-Accept natural, brief, incomplete requests. Use the conversation, project documents, and existing results to establish the goal and preserve confirmed decisions. Complete simple tasks directly without requiring a template. Decide routine reversible details within authorization; ask only essential questions when the direction cannot be inferred and a wrong choice would cause substantial rework. Follow applicable permission rules without requesting existing authorization again.
+These are the problems the rules target, not a claim that every issue has been resolved in practice. See [AGENTS.md](AGENTS.md), the Chinese canonical workflow, for exact triggers and authorization boundaries.
 
-When a visual or experience direction remains unclear and a full implementation would be expensive to redo, start with a representative sample. If autonomous selection is already authorized, compare and continue without an extra approval stage. Inspect actual renders for visual work, normal operation paths for interactions, and expected behavior for functions. Reassess failed fixes using evidence. Static checks do not replace experience validation, and self-checks do not establish user satisfaction.
+| Problem | Approach |
+| --- | --- |
+| Drifting from references | Extract required features, compare rendered samples, and obtain approval at explicitly required checkpoints before expanding. |
+| Piling on patches | Revise existing clauses, merge duplicates, and resolve conflicts instead of continually appending rules. |
+| Repeated questions | Use available context first; ask only about consequential choices, without requiring a template. |
+| Excessive approval requests | Handle routine details within authorization and do not request existing authorization again. |
+| Forgetting earlier decisions | Update only the parts affected by new feedback and preserve confirmed decisions. |
+| Over-delegation | Do simple tasks directly; delegate only useful work that can proceed independently. |
+| Repeating research | Hand off necessary context and verify key evidence instead of repeating the entire investigation. |
+| Blind trial and error | Diagnose failed fixes before trying again rather than repeating speculative changes. |
+| Superficial validation | Inspect actual renders, follow normal interaction paths, and validate functions and visuals separately. |
+| Endless scope growth | Deliver when the goal is met instead of automatically adding optimization or reviews. |
+| Unnecessary model escalation | Escalate with task difficulty; do not default to the highest tier or claim unperformed model switches. |
 
-These principles apply to both single-agent and multi-agent work. They do not mandate interviews, samples, or reviews for every task. Deliver when the current goal and necessary validation are complete, without automatically expanding optimization, adding review rounds, or creating new rules. The complete conditions are in [AGENTS.md](AGENTS.md), maintained in Chinese as the canonical workflow.
+These principles apply to single-agent and multi-agent work without requiring interviews, samples, or reviews for every task. Asset, technical, or cost constraints do not justify silently changing an agreed direction. Temporary interfaces do not establish visual acceptance, and self-checks do not establish user approval.
 
 ## Upgrading an existing installation
 
-This revision integrates collaboration principles with the existing roles, model levels, concurrency limit, escalation conditions, and handoff rules. Role configurations and model defaults are unchanged. Shared requirements such as on-demand delegation are organized as general principles with specific execution conditions.
+The September 12, 2026 revision refines the collaboration principles while preserving roles, models, concurrency limits, and escalation settings.
 
 Merge the complete repository `AGENTS.md` into the personal global file. Replace equivalent rules from earlier kit versions instead of appending the old English workflow or the six collaboration paragraphs again. Preserve unrelated compatible personal rules and report unresolved semantic conflicts. Do not overwrite the entire personal configuration file.
 
@@ -67,7 +79,7 @@ Provide each child only the objective, relevant context, constraints, file owner
 
 ## Compatibility and cost
 
-Model settings reflect a personal configuration exported on September 10, 2026; collaboration principles were integrated on September 11, 2026. Model access, reasoning levels, and configuration support depend on the destination account and Codex version. Verify them during installation and report unavailable settings explicitly.
+Model settings reflect a personal configuration exported on September 10, 2026; collaboration principles were revised on September 12, 2026. Model access, reasoning levels, and configuration support depend on the destination account and Codex version. Verify them during installation and report unavailable settings explicitly.
 
 Multiple agents can consume more tokens than a comparable single-agent run. These defaults aim to avoid unnecessary delegation; they do not guarantee lower total cost.
 
